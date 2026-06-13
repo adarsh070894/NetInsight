@@ -1,19 +1,37 @@
-# Local AI Chatbot with Streamlit & Llama 3
+# NetInsight AI
 
-A lightweight AI chatbot that runs completely locally using **Llama 3** through **Ollama** and provides an interactive web interface using **Streamlit**.
+An AI-powered Network Operations Assistant that combines **Llama 3**, **Ollama**, **Streamlit**, and **Netmiko** to execute network commands on devices using natural language.
 
-This project demonstrates how local Large Language Models (LLMs) can be integrated into applications without relying on cloud-based AI services.
+NetInsight AI allows network engineers to interact with network devices conversationally instead of manually connecting to devices and typing commands.
 
 ---
 
 ## Features
 
-* Runs completely locally (No cloud API required)
-* Interactive chat interface built with Streamlit
-* Session-based conversation history
-* Uses locally hosted Llama 3 via Ollama
-* Simple and lightweight architecture
-* Easy to extend with APIs, tools, or automation workflows
+* Natural language network command execution
+* Local AI inference using Llama 3 via Ollama
+* Interactive web interface built with Streamlit
+* Multi-device support
+* SSH connectivity using Netmiko
+* No cloud APIs required
+* Fast and lightweight architecture
+* Easily extensible for network automation workflows
+
+---
+
+## Example Queries
+
+```text
+Run show version on r1
+
+Show ip interface brief on r2
+
+Run show interfaces status on r1 and r3
+
+Execute show ip route on all routers
+```
+
+The AI interprets the request, identifies the target devices and commands, then connects to the devices and returns the output.
 
 ---
 
@@ -23,70 +41,85 @@ This project demonstrates how local Large Language Models (LLMs) can be integrat
 User
   │
   ▼
-Streamlit Web UI
+Streamlit Chat Interface
   │
   ▼
-Ollama REST API
+Llama 3 (Ollama)
   │
   ▼
-Llama 3 Model
+Intent Extraction
   │
   ▼
-AI Response
+Netmiko SSH Connection
+  │
+  ▼
+Network Devices
+  │
+  ▼
+Command Output
+  │
+  ▼
+User
 ```
 
 ---
 
-## Tech Stack
+## Technology Stack
 
 * Python
 * Streamlit
 * Ollama
 * Llama 3
+* Netmiko
+* Requests
 
 ---
 
 ## Project Structure
 
 ```text
-.
-├── chatbot.py
+NetInsight-AI/
+│
+├── NetInsight.py
+├── README.md
 ├── requirements.txt
-└── README.md
+└── screenshots/
 ```
 
 ---
 
 ## Prerequisites
 
-### Install Ollama
+Install:
+
+* Python 3.10+
+* Ollama
+* Llama 3 model
+
+---
+
+## Install Ollama
 
 Download and install Ollama:
 
 https://ollama.com
 
-Verify installation:
-
-```bash
-ollama --version
-```
-
-### Pull the Llama 3 Model
+Pull the Llama 3 model:
 
 ```bash
 ollama pull llama3
+```
+
+Verify the model:
+
+```bash
+ollama list
 ```
 
 Start the Ollama service:
 
 ```bash
 ollama serve
-```
-
-By default, Ollama runs on:
-
-```text
-http://localhost:11434
 ```
 
 ---
@@ -96,86 +129,127 @@ http://localhost:11434
 Clone the repository:
 
 ```bash
-git clone <repository-url>
-cd <repository-name>
+git clone https://github.com/<your-username>/NetInsight-AI.git
+
+cd NetInsight-AI
 ```
 
 Create a virtual environment:
 
+```bash
+python -m venv venv
+```
+
+Activate the virtual environment:
+
 ### Windows
 
 ```bash
-python -m venv venv
 venv\Scripts\activate
 ```
 
 ### Linux / macOS
 
 ```bash
-python3 -m venv venv
 source venv/bin/activate
 ```
 
 Install dependencies:
 
 ```bash
-pip install streamlit requests
+pip install -r requirements.txt
 ```
 
 ---
 
-## Running the Application
+## Run the Application
 
-Start the chatbot:
+Start Streamlit:
 
 ```bash
-streamlit run chatbot.py
+streamlit run NetInsight.py
 ```
 
-The application will open in your browser automatically.
-
----
-
-## Example Usage
-
-User:
+Open:
 
 ```text
-What is OSPF?
-```
-
-Assistant:
-
-```text
-OSPF (Open Shortest Path First) is a link-state routing protocol used in IP networks...
+http://localhost:8501
 ```
 
 ---
 
-## Learning Outcomes
+## Device Inventory
 
-This project helped in understanding:
+Update the device inventory section in the script with your network devices:
 
-* Local LLM deployment using Ollama
-* REST API integration in Python
-* Building conversational interfaces with Streamlit
-* Managing session-based chat history
-* Creating AI-powered applications without cloud dependencies
+```python
+DEVICE_INVENTORY = {
+    "r1": {
+        "device_type": "arista_eos",
+        "host": "192.168.0.201",
+        "username": "admin",
+        "password": "admin"
+    }
+}
+```
+
+---
+
+## Security Notice
+
+This project is intended for lab and learning environments.
+
+Recommended improvements for production use:
+
+* Store credentials in environment variables
+* Use encrypted secrets management
+* Implement role-based access control
+* Restrict command execution using allowlists
+* Enable audit logging
 
 ---
 
 ## Future Enhancements
 
-* Network automation integration
-* Device command execution
-* Tool calling
-* RAG (Retrieval-Augmented Generation)
-* Multi-model support
-* Chat history persistence
-* Authentication and user management
+* AI-powered troubleshooting analysis
+* OSPF health checks
+* BGP validation
+* Routing table comparison
+* Network health summaries
+* Configuration compliance checks
+* Multi-vendor support
+* RAG-based network documentation search
+* Webex and Teams integration
+
+---
+
+## Sample Workflow
+
+```text
+User:
+Show ip interface brief on r2
+
+AI:
+Identifies device = r2
+Identifies command = show ip interface brief
+
+Netmiko:
+Connects to r2 via SSH
+
+Result:
+Displays command output in Streamlit
+```
+
+---
+
+## Author
+
+Adarsh Singh
+
+Network Automation | AI for Networking |
 
 ---
 
 ## License
 
-This project is open source and available under the MIT License.
+This project is licensed under the MIT License.
